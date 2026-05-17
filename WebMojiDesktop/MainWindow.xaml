@@ -12,7 +12,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <CameraView Grid.Column="0" x:Name="CameraView"/>
+        <local:CameraView Grid.Column="0" x:Name="CameraView"/>
 
         <Image x:Name="GestureImage" Grid.Column="1" Stretch="Uniform"/>
     </Grid>
