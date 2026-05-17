@@ -6,6 +6,12 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
     <Grid>
-        <Image x:Name="CameraImage" Stretch="UniformToFill" />
+        <Image x:Name="CameraImage" Stretch="UniformToFill"/>
+        <TextBlock x:Name="DebugText" 
+               Foreground="Pink" 
+               FontSize="24"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"
+               Margin="10"/>
     </Grid>
 </UserControl>

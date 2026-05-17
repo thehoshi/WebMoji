@@ -1,18 +1,12 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System;
 using System.Windows.Media.Imaging;
 using WebMojiCore;
-using WebMojiDesktop.UserControl;
-
 
 namespace WebMojiDesktop.UserControl
 {
-    /// <summary>
-    /// Interaction logic for ImageView.xaml
-    /// </summary>
     public partial class ImageView : System.Windows.Controls.UserControl
     {
-        private readonly CameraView cameraViewInstance;
+        private readonly GestureImageMap imageMap = new();
 
         public ImageView()
         {
@@ -21,23 +15,25 @@ namespace WebMojiDesktop.UserControl
             imageMap.Set(GestureType.Fist, "C:\\Users\\Admin\\source\\repos\\WebMoji\\WebMojiDesktop\\Image\\FistImage.jpg");
             imageMap.Set(GestureType.OneFinger, "C:\\Users\\Admin\\source\\repos\\WebMoji\\WebMojiDesktop\\Image\\OneFingerImage.jpg");
             imageMap.Set(GestureType.Swag, "C:\\Users\\Admin\\source\\repos\\WebMoji\\WebMojiDesktop\\Image\\SwagImage.jpg");
-
-            cameraViewInstance = new CameraView();
-            cameraViewInstance.GestureDetected += OnGestureDetected;
         }
 
-        private void OnGestureDetected(GestureType gesture)
+        public void ShowGesture(GestureType gesture)
         {
             var path = imageMap.Get(gesture);
             if (path == null) return;
 
-            GestureImage.Source = new BitmapImage(new Uri(path, UriKind.Relative));
-        }
+            var fullPath = System.IO.Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory, path);
 
-        private void OnClosing(object? sender, CancelEventArgs e)
-        {
-            cameraViewInstance.Stop();
-        }
+            if (!System.IO.File.Exists(fullPath)) return;
 
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(fullPath, UriKind.Absolute);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+
+            GestureImage.Source = bitmap;
+        }
     }
 }

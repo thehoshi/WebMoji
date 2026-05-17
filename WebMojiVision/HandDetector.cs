@@ -1,5 +1,6 @@
 ﻿using OpenCvSharp;
 using WebMojiCore;
+using System.Linq;
 
 namespace WebMojiVision
 {
@@ -7,8 +8,18 @@ namespace WebMojiVision
     {
         public GestureResult Detect(Mat frame)
         {
+            int x = frame.Cols / 4;
+            int y = frame.Rows / 4;
+            int w = frame.Cols / 2;
+            int h = frame.Rows / 2;
+
+            var roi = new Rect(x, y, w, h);
+            using var cropped = new Mat(frame, roi);
+
+            Cv2.Rectangle(frame, roi, Scalar.White, 2);
+
             using var hsv = new Mat();
-            Cv2.CvtColor(frame, hsv, ColorConversionCodes.BGR2HSV);
+            Cv2.CvtColor(cropped, hsv, ColorConversionCodes.BGR2HSV);
 
             using var mask1 = new Mat();
             using var mask2 = new Mat();
@@ -22,9 +33,6 @@ namespace WebMojiVision
             Cv2.MorphologyEx(mask, mask, MorphTypes.Open, kernel);
             Cv2.MorphologyEx(mask, mask, MorphTypes.Close, kernel);
 
-            Cv2.ImShow("mask", mask);
-            Cv2.WaitKey(1);
-
             Cv2.FindContours(mask, out var contours, out _,
                 RetrievalModes.External,
                 ContourApproximationModes.ApproxSimple);
@@ -34,10 +42,11 @@ namespace WebMojiVision
 
             var hand = contours.OrderByDescending(c => Cv2.ContourArea(c)).First();
 
-            if (Cv2.ContourArea(hand) < 5000)
+            if (Cv2.ContourArea(hand) < 3000)
                 return new GestureResult { Gesture = GestureType.None, Confidence = 0f };
 
-            Cv2.DrawContours(frame, new[] { hand }, -1, Scalar.Lime, 2);
+            var shifted = hand.Select(p => new Point(p.X + x, p.Y + y)).ToArray();
+            Cv2.DrawContours(frame, new[] { shifted }, -1, Scalar.Lime, 2);
 
             int fingers = CountFingers(hand);
 
@@ -45,7 +54,7 @@ namespace WebMojiVision
             {
                 0 => GestureType.Fist,
                 1 => GestureType.OneFinger,
-                4 => GestureType.Swag,
+                2 => GestureType.Swag,
                 _ => GestureType.None
             };
 

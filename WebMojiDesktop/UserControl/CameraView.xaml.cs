@@ -31,6 +31,7 @@ namespace WebMojiDesktop.UserControl
             Dispatcher.Invoke(() =>
             {
                 CameraImage.Source = bitmap;
+                DebugText.Text = result.Gesture.ToString();
 
                 if (result.Gesture != GestureType.None)
                     GestureDetected?.Invoke(result.Gesture);
