@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WebMojiDesktop.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:WebMojiDesktop"
+        xmlns:local="clr-namespace:WebMojiDesktop.UserControl"
         Title="WebMoji" Height="600" Width="1000"
         Closing="OnClosing"
         Background="Black">

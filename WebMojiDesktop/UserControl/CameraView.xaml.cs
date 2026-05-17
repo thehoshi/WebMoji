@@ -12,7 +12,6 @@ namespace WebMojiDesktop.UserControl
         private readonly CameraService camera = new();
         private readonly HandDetector detector = new();
 
-        // событие — говорим MainWindow какой жест обнаружен
         public event Action<GestureType>? GestureDetected;
 
         public CameraView()
