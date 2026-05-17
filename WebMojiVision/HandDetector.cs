@@ -14,9 +14,13 @@ namespace WebMojiVision
             // маска цвета кожи
             using var mask = new Mat();
             Cv2.InRange(hsv,
-                new Scalar(0, 20, 70),
-                new Scalar(20, 255, 255),
-                mask);
+            new Scalar(0, 20, 70),
+            new Scalar(20, 255, 255),
+            mask);
+
+            // временно — показываем маску в отдельном окне
+            Cv2.ImShow("mask", mask);
+            Cv2.WaitKey(1);
 
             // убираем шум
             using var kernel = Cv2.GetStructuringElement(MorphShapes.Ellipse, new Size(5, 5));
@@ -47,7 +51,7 @@ namespace WebMojiVision
             {
                 0 => GestureType.Fist,
                 1 => GestureType.OneFinger,
-                4 => GestureType.Swag,  // подберём под твой жест
+                4 => GestureType.Swag,
                 _ => GestureType.None
             };
 

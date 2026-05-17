@@ -1,45 +1,37 @@
-﻿using OpenCvSharp;
-using OpenCvSharp.WpfExtensions;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using WebMojiCore;
-using WebMojiVision;
+using WebMojiDesktop.UserControl;
 
 namespace WebMojiDesktop
 {
-    public partial class MainWindow : System.Windows.Window
+    public partial class MainWindow : Window
     {
-        private readonly CameraService camera = new();
-        private readonly HandDetector detector = new();
+        private readonly GestureImageMap imageMap = new();
 
         public MainWindow()
         {
             InitializeComponent();
-            camera.FrameReady += OnFrameReady;
-            camera.Start();
+
+            imageMap.Set(GestureType.Fist, "C:\\Users\\Admin\\source\\repos\\WebMoji\\WebMojiDesktop\\Image\\FistImage.jpg");
+            imageMap.Set(GestureType.OneFinger, "C:\\Users\\Admin\\source\\repos\\WebMoji\\WebMojiDesktop\\Image\\OneFingerImage.jpg");
+            imageMap.Set(GestureType.Swag, "C:\\Users\\Admin\\source\\repos\\WebMoji\\WebMojiDesktop\\Image\\SwagImage.jpg");
+
+            CameraView.GestureDetected += OnGestureDetected;
         }
 
-        private void OnFrameReady(Mat frame)
+        private void OnGestureDetected(GestureType gesture)
         {
-            // детектируем жест
-            var result = detector.Detect(frame);
+            var path = imageMap.Get(gesture);
+            if (path == null) return;
 
-            // конвертируем и показываем кадр с нарисованным контуром
-            var bitmap = BitmapSourceConverter.ToBitmapSource(frame);
-            bitmap.Freeze();
-
-            Dispatcher.Invoke(() =>
-            {
-                CameraImage.Source = bitmap;
-
-                // пока просто выводим жест в заголовок окна
-                Title = $"WebMoji — {result.Gesture}";
-            });
+            GestureImage.Source = new BitmapImage(new Uri(path, UriKind.Relative));
         }
 
         private void OnClosing(object? sender, CancelEventArgs e)
         {
-            camera.Stop();
+            CameraView.Stop();
         }
     }
 }

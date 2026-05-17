@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Image\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\WebMojiCore\WebMojiCore.csproj" />
     <ProjectReference Include="..\WebMojiVision\WebMojiVision.csproj" />
   </ItemGroup>
