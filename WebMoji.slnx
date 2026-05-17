@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="WebMojiCore/WebMojiCore.csproj" Id="c2861d8c-ecc0-483b-a315-df8dd7bebe56" />
+  <Project Path="WebMojiDesktop/WebMojiDesktop.csproj" Id="b274d60c-6b25-4d78-a10b-23445a1c5c07" />
+  <Project Path="WebMojiVision/WebMojiVision.csproj" Id="4264c797-6b19-4d58-ad39-e8042e281d23" />
+</Solution>

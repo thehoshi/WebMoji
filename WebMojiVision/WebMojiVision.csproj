@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mediapipe.Net" Version="0.9.2" />
+    <PackageReference Include="Mediapipe.Net.Runtime.CPU" Version="0.9.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="10.0.8" />
+    <PackageReference Include="OpenCvSharp4" Version="4.13.0.20260427" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebMojiCore\WebMojiCore.csproj" />
+  </ItemGroup>
+
+</Project>
